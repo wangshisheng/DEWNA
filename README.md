@@ -1,48 +1,29 @@
 # DEWNA
 Dynamic Entropy Weight Network Analysis
 
-# NAguideR<img src="NAguideR_logo.jpg" align="right" height="140" width="164"/>
-NAguideR: performing and prioritizing missing value imputations for consistent bottom-up proteomic analyses
-
 ## Brief Description
-**<font size='5'> NAguideR </font>** is a web-based tool, which integrates 23 common missing value imputation methods and provides two categories of evaluation criteria (4 classic criteria and 4 proteomic criteria) to assess the imputation performance of various methods. We hope this tool could help scientists impute the missing values systematically and present valuable guidance to select one proper method for their own data. In addition, this tool supports both online access and local installation. The online version can be linked from here: [https://www.omicsolution.org/wukong/NAguideR](https://www.omicsolution.org/wukong/NAguideR).
-
-## Citation
-**<font size='5'> NAguideR </font>** has been published in [Nucleic Acids Research](https://academic.oup.com/nar). If you use this software to analyze your own data, please cite it as below, thanks:
-
-Shisheng Wang, Wenxue Li, Liqiang Hu, Jingqiu Cheng, Hao Yang, Yansheng Liu, NAguideR: performing and prioritizing missing value imputations for consistent bottom-up proteomic analyses, Nucleic Acids Research, gkaa498, [https://doi.org/10.1093/nar/gkaa498](https://doi.org/10.1093/nar/gkaa498).
-
+**<font size='5'> NAguideR </font>** is a web-based tool, which implements the entropy weight method, which is a weighting model that assigns weights to indices based on the degree of value dispersion, evaluating the perturbation of clusters or pathways by examining the expression profiles of proteins within these groups. The greater the variability in protein expression upon treatment, the higher the contribution to cluster or pathway perturbation, and therefore, the greater the weight assigned to those proteins. Conversely, proteins with less variability receive lower weights. Additionally, for each cluster, DEWNA integrates the co-expression network analysis to reveal meaningful multi-scale organizations of co-expressed protein network and identifies novel therapeutic targets. On the other hand, for pathway analysis, DEWNA employs the generalized reporter score-based analysis to assess the enriched pathways based on the dynamic weighted protein expression matrices. Therefore, by creatively merging these approaches and extending the functionalities, DEWNA allows for the identification of protein hubs and the elucidation of cluster/pathway entropy weighted profiles during disease progression, providing a comprehensive view of the dynamic changes occurring in response to treatment. In addition, this tool supports both online access and local installation. The online version can be linked from here: [https://www.omicsolution.com/wukong/DEWNA](https://www.omicsolution.com/wukong/DEWNA).
 
 ## Software Manual
-A detailed introduction of this software can be found in [NAguideR_Manual.pdf](https://github.com/wangshisheng/NAguideR/blob/master/NAguideR_Manual.pdf) file.
+A detailed introduction of this software can be found in [SupplementaryNotes.pdf](https://github.com/wangshisheng/DEWNA/blob/main/SupplementaryNotes.pdf) file.
 
 ## Preparation for local installation
-This tool is developed with R, so if you want to run it locally, you may do some preparatory work:  
+This tool is developed with R, so if you want to run it locally, you may do some preparatory work: 
 **1. Install R.** You can download R from here: [https://www.r-project.org/](https://www.r-project.org/).  
 **2. Install RStudio.** (Recommendatory but not necessary). You can download RStudio from here: [https://www.rstudio.com/](https://www.rstudio.com/).  
-**3. Check packages.** After installing R and RStudio, you should check whether you have installed these packages (devtools, shiny, shinyBS, shinyjs, shinyWidgets, DT, gdata, ggplot2, glmnet, reshape2, ggsci, openxlsx, data.table, DT, raster, Metrics, vegan, tidyverse, ggExtra, cowplot, Amelia, e1071, impute, SeqKnn, pcaMethods, norm, imputeLCMD, VIM, rrcovNA, mice, missForest, GMSimpute, DreamAI). You may run the codes below to check them:  
+**3. Check packages.** After installing R and RStudio, you should check whether you have installed these packages (devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, clusterProfiler, ReporterScore). You may run the codes below to check them:  
 
 ```r
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(devtools, shiny, shinyBS, shinyjs, shinyWidgets, DT, gdata, ggplot2, glmnet, reshape2, ggsci, openxlsx, data.table, DT, raster, Metrics, vegan, tidyverse, ggExtra, cowplot, Amelia, e1071, impute, SeqKnn, pcaMethods, norm, imputeLCMD, VIM, rrcovNA, mice, missForest, DreamAI)
+pacman::p_load(devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, clusterProfiler, ReporterScore)
 ```
-
-Please note, you may find the [SeqKnn](https://github.com/cran/SeqKnn) package can not be installed rightly as it has not been updated for a long time. If so, please download this package from here: [SeqKnn_1.0.1.tar.gz](https://github.com/wangshisheng/NAguideR/blob/master/SeqKnn_1.0.1.tar.gz). In addition, we also change some functions slightly in [GMSimpute](https://cran.r-project.org/web/packages/GMSimpute/index.html) package, you can download it from here: [GMSimpute](https://github.com/wangshisheng/NAguideR/blob/master/GMSimpute_0.0.1.1.tar.gz). Then you can install the two packages locally:
-
-```r
-setwd('path') #path is where the two packages are.
-install.packages("SeqKnn_1.0.1.tar.gz", repos = NULL,type="source")
-install.packages("GMSimpute_0.0.1.1.tar.gz", repos = NULL,type="source")
-```
-
-The DreamAI package introduction can be found here: [https://github.com/WangLab-MSSM/DreamAI](https://github.com/WangLab-MSSM/DreamAI).
 
 ## Run it locally
 If the preparatory work has been done, you can run this tool locally as below:
 ```r
-if(!require(NAguideR)) devtools::install_github("wangshisheng/NAguideR")
-library(NAguideR)
-NAguideR_app()
+if(!require(DEWNA)) devtools::install_github("wangshisheng/DEWNA")
+library(DEWNA)
+DEWNA_app()
 ```
 
 Then NAguideR will be started as below:
@@ -54,8 +35,8 @@ Enjoy yourself^_^
 
 
 ## Friendly suggestion
-1. Open NAguideR with Chrome or Firefox.
-2. The minimum operating system specifications are: **RAM 4GB, Hard drive 100 GB.**
+1. Open DEWNA with Chrome or Firefox.
+2. The minimum operating system specifications are: **RAM 8GB, Hard drive 500 GB.**
 
 
 ## Contact
