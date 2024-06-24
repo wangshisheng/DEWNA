@@ -26,7 +26,7 @@ library(DEWNA)
 DEWNA_app()
 ```
 
-Then NAguideR will be started as below:
+Then DEWNA will be started as below:
 
 <img src="homepage.png" align="center" height="672" width="500"/>
 
