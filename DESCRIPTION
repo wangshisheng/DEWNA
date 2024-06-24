@@ -1,10 +1,10 @@
-Package: DEWNB
+Package: DEWNA
 Type: Package
-Title: DEWNB: Dynamic entropy weight network biomarkers
+Title: DEWNA: Dynamic Entropy Weight Network Analysis
 Version: 0.1.0
 Author: Shisheng Wang
 Maintainer: Shisheng Wang <wssdandan2009@outlook.com>
-Description: DEWNB applies the concepts of entropy weight method and multiscale embedded gene co-expression network to analyze time-course proteome expression data and aims to help scientists identify protein hubs biomarkers during disease progression.
+Description: DEWNA (Dynamic Entropy Weight Network Analysis) is a sophisticated and user-friendly stand-alone software designed to facilitate the dynamic analysis of proteins and their associated functions in response to various treatments.
 Imports:
   shiny,
   shinyjs,
