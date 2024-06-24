@@ -7,34 +7,28 @@ Maintainer: Shisheng Wang <wssdandan2009@outlook.com>
 Description: DEWNB applies the concepts of entropy weight method and multiscale embedded gene co-expression network to analyze time-course proteome expression data and aims to help scientists identify protein hubs biomarkers during disease progression.
 Imports:
   shiny,
-  shinyBS,
   shinyjs,
-  DT,
+  shinyBS,
+  shinyWidgets,
+  readxl,
   gdata,
-  knitr,
   ggplot2,
   ggsci,
-  openxlsx,
+  DT,
   data.table,
+  uwot,
+  pheatmap,
+  RColorBrewer,
   tidyverse,
   ggExtra,
   cowplot,
-  Amelia,
+  writexl,
   impute,
-  coin,
-  exactRankTests,
-  limma,
-  samr,
-  RankProd,
-  ROTS,
-  msqrobsum,
-  MSnbase,
-  DEqMS,
-  plgem,
-  effsize,
-  patchwork,
-  metaseqR,
-  survcomp
-License: Commercial use is not permitted.
+  Amelia,
+  qgraph,
+  MEGENA,
+  clusterProfiler,
+  ReporterScore
+License: MIT license.
 Encoding: UTF-8
 LazyData: true
