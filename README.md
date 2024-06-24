@@ -11,11 +11,11 @@ A detailed introduction of this software can be found in [SupplementaryNotes.pdf
 This tool is developed with R, so if you want to run it locally, you may do some preparatory work: 
 **1. Install R.** You can download R from here: [https://www.r-project.org/](https://www.r-project.org/).  
 **2. Install RStudio.** (Recommendatory but not necessary). You can download RStudio from here: [https://www.rstudio.com/](https://www.rstudio.com/).  
-**3. Check packages.** After installing R and RStudio, you should check whether you have installed these packages (devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, clusterProfiler, ReporterScore). You may run the codes below to check them:  
+**3. Check packages.** After installing R and RStudio, you should check whether you have installed these packages (devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, MetaNet, clusterProfiler, ReporterScore). You may run the codes below to check them:  
 
 ```r
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, clusterProfiler, ReporterScore)
+pacman::p_load(devtools, shiny, shinyjs, shinyBS, shinyWidgets, readxl, gdata, ggplot2, ggsci, DT, data.table, uwot, pheatmap, RColorBrewer, tidyverse, ggExtra, cowplot, writexl, impute, Amelia, qgraph, MEGENA, MetaNet, clusterProfiler, ReporterScore)
 ```
 
 ## Run it locally
