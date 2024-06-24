@@ -1,4 +1,4 @@
-# DEWNA<img src="DEWNA_logo.png" align="right" height="140" width="164"/>
+# DEWNA<img src="DEWNA_logo.png" align="right" height="150" width="164"/>
 Dynamic Entropy Weight Network Analysis
 
 ## Brief Description
