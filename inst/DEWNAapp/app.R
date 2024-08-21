@@ -367,10 +367,15 @@ ui<-renderUI(
                       placement = "right",options = list(container = "body")),
             conditionalPanel(
               condition = "input.targetMif==true",
-              textInput("targetModule",h5("4.1. Targeted cluster index:"),value = "2;5;21;24;27;35;38;46;57")
+              textInput("targetModule",h5("4.1. Targeted cluster index:"),value = "2;5;21;24;27;35;38;46;57"),
+              bsTooltip("targetModule",'Please note that more targeted clusters you type in here, more time-consuming it will be. Moreover, different targeted clusters will result in different networks and hubs.',
+                        placement = "right",options = list(container = "body"))
             ),
-            textInput("wuzhongkegg",h5("5. Species id from KEGG database:"),value = "hsa"),
-            selectInput("keggpathselect",h5("6. KEGG pathway classification:"),choices = c("Metabolism","Genetic Information Processing","Environmental Information Processing",
+            checkboxInput("networklabelif","5. Show the labels of the hub network or not?",value = F),
+            bsTooltip("networklabelif",'If true, it will display the labels of the hub network in the "3.1.3. Network and hubs" part.',
+                      placement = "right",options = list(container = "body")),
+            textInput("wuzhongkegg",h5("6. Species id from KEGG database:"),value = "hsa"),
+            selectInput("keggpathselect",h5("7. KEGG pathway classification:"),choices = c("Metabolism","Genetic Information Processing","Environmental Information Processing",
                                                             "Cellular Processes","Organismal Systems","Human Diseases"),#,"Drug Development"
                         selected=c("Metabolism","Genetic Information Processing","Environmental Information Processing",
                                    "Cellular Processes","Organismal Systems","Human Diseases"),multiple = T),
@@ -1333,6 +1338,7 @@ server<-shinyServer(function(input, output, session){
         entropydf2
       })
       kegghubsgrsaout<-reactive({
+        library(clusterProfiler)
         library(ReporterScore)
         if(input$logif){
           protxt1<<-2^knnimputeresout()
@@ -1580,22 +1586,38 @@ server<-shinyServer(function(input, output, session){
         MEGENA.hubs.listx<<-hubnetworkplistout()$MEGENA.hubs.listx
         gi <- graph.data.frame(eli,directed = FALSE)
         gdegreei<-igraph::degree(gi)+1
-        qgraph::qgraph(eli,directed=F,layout = "spring",#
-                       groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
-                                     Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
-                       color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
-                       labels=F,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        if(input$networklabelif){
+          qgraph::qgraph(eli,directed=F,layout = "spring",#
+                         groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
+                                       Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
+                         color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
+                         labels=T,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        }else{
+          qgraph::qgraph(eli,directed=F,layout = "spring",#
+                         groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
+                                       Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
+                         color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
+                         labels=F,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        }
       })
       hubnetworkplotout<-reactive({
         eli<<-hubnetworkplistout()$eli
-        MEGENA.hubs.listx<-hubnetworkplistout()$MEGENA.hubs.listx
+        MEGENA.hubs.listx<<-hubnetworkplistout()$MEGENA.hubs.listx
         gi <- graph.data.frame(eli,directed = FALSE)
         gdegreei<-igraph::degree(gi)+1
-        qgraph::qgraph(eli,directed=F,layout = "spring",#
-                       groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
-                                     Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
-                       color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
-                       labels=F,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        if(input$networklabelif){
+          qgraph::qgraph(eli,directed=F,layout = "spring",#
+                         groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
+                                       Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
+                         color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
+                         labels=T,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        }else{
+          qgraph::qgraph(eli,directed=F,layout = "spring",#
+                         groups = list(Hubs=which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx),
+                                       Neighbors=c(1:length(unique(c(eli$row,eli$col))))[-which(unique(c(eli$row,eli$col))%in%MEGENA.hubs.listx)]),
+                         color = c("#E64B35FF","#3B4992FF"),label.color="black",vsize=log(gdegreei),
+                         labels=F,label.cex=2,borders=F,edge.width=0.5,edge.color="grey80")
+        }
       })
       output$hubnetworkpdl<-downloadHandler(
         filename = function(){paste("Hubs.Network.Plot_",usertimenum,".pdf",sep="")},
