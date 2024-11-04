@@ -7,6 +7,9 @@ Dynamic Entropy Weight Network Analysis
 ## Software Manual
 A detailed introduction of this software can be found in [SupplementaryNotes.pdf](https://github.com/wangshisheng/DEWNA/blob/main/SupplementaryNotes.pdf) file.
 
+## Citation
+Shisheng Wang, Wenjuan Zeng, Yin Yang, Jingqiu Cheng, Dan Liu, Hao Yang, DEWNA: dynamic entropy weight network analysis and its application to the DNA-binding proteome in A549 cells with cisplatin-induced damage, Briefings in Bioinformatics, Volume 25, Issue 6, November 2024, bbae564, [https://doi.org/10.1093/bib/bbae564](https://doi.org/10.1093/bib/bbae564).
+
 ## Preparation for local installation
 This tool is developed with R, so if you want to run it locally, you may do some preparatory work: 
 **1. Install R.** You can download R from here: [https://www.r-project.org/](https://www.r-project.org/).  
