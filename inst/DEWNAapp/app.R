@@ -1211,36 +1211,46 @@ server<-shinyServer(function(input, output, session){
         }
         cliris<<-clusteringdfout()$kmeansres
         #EWdfoutx<<-EWdfout()
-        mdatareadn<-t(scale(t(protxt1)))
+        mdatareadn<<-t(scale(t(protxt1)))
         MEGENA.output.list<-MEGENA.hubs.list<-list()
         withProgress(message = 'Hubs finding...', style = "notification", detail = "", value = 0,{
-          for(i in 1:length(mubiaomodule)){
-            datExprxi<-mdatareadn[rownames(mdatareadn)%in%names(cliris$cluster)[cliris$cluster==mubiaomodule[i]],]
+          for(ik in 1:length(mubiaomodule)){
+            set.seed(123456)
+            datExprxi<-mdatareadn[rownames(mdatareadn)%in%names(cliris$cluster)[cliris$cluster==mubiaomodule[ik]],]
             ijwi <- calculate.correlation(datExprxi,doPerm=10)
             eli <- calculate.PFN(ijwi[,1:3])
             gi <- graph.data.frame(eli,directed = FALSE)
-            set.seed(123456)
-            MEGENA.outputi <- do.MEGENA(g = gi,remove.unsig = FALSE,doPar = FALSE,n.perm = 100,
-                                        mod.pval = 0.1,hub.pval = 0.1,min.size = 5,max.size = 2500)
-            output.summaryi <- MEGENA.ModuleSummary(MEGENA.outputi,
-                                                    mod.pvalue = 0.1,hub.pvalue = 0.1,
-                                                    min.size = 5,max.size = 2500,
-                                                    annot.table = NULL,id.col = NULL,symbol.col = NULL,
-                                                    output.sig = TRUE)
-            MEGENA.output.list[[i]]<-output.summaryi
-            modulehubsi<-output.summaryi$module.table$module.hub
-            modulehubsi1<-modulehubsi[modulehubsi!="()"]
-            modulehubsi2<-unique(unlist(lapply(modulehubsi1,function(x){
-              x1<-strsplit(x,",")[[1]]
-              x2<-gsub("\\(\\d+\\)","",x1)
-              x2
-            })))
-            MEGENA.hubs.list[[i]]<-modulehubsi2
-            incProgress(1/length(mubiaomodule), detail = paste0("Cluster ",mubiaomodule[i]," done!"))
+            MEGENA.outputi <-tryCatch({
+              do.MEGENA(g = gi,remove.unsig = FALSE,doPar = FALSE,n.perm = 100,
+                        mod.pval = 0.1,hub.pval = 0.1,min.size = 5,max.size = 2500)
+            },error=function(e) NA)
+            output.summaryi <- tryCatch({
+              MEGENA.ModuleSummary(MEGENA.outputi,
+                                   mod.pvalue = 0.1,hub.pvalue = 0.1,
+                                   min.size = 5,max.size = 2500,
+                                   annot.table = NULL,id.col = NULL,symbol.col = NULL,
+                                   output.sig = TRUE)
+            },error=function(e) NA)
+            MEGENA.output.list[[ik]]<-output.summaryi
+            if(!is.na(output.summaryi)[1]){
+              modulehubsi<-output.summaryi$module.table$module.hub
+              modulehubsi1<-modulehubsi[modulehubsi!="()"]
+              modulehubsi2<-unique(unlist(lapply(modulehubsi1,function(x){
+                x1<-strsplit(x,",")[[1]]
+                x2<-gsub("\\(\\d+\\)","",x1)
+                x2
+              })))
+              MEGENA.hubs.list[[ik]]<-modulehubsi2
+            }else{
+              MEGENA.hubs.list[[ik]]<-NA
+            }
+            incProgress(1/length(mubiaomodule), detail = paste0("Cluster ",mubiaomodule[ik]," done!"))
           }
         })
         names(MEGENA.output.list)<-names(MEGENA.hubs.list)<-paste0("M",mubiaomodule)
-        list(MEGENA.output.list=MEGENA.output.list,MEGENA.hubs.list=MEGENA.hubs.list)
+        MEGENA.output.listx1<-MEGENA.output.list[!is.na(MEGENA.output.list)]
+        MEGENA.hubs.listx1<-MEGENA.hubs.list[!is.na(MEGENA.hubs.list)]
+        list(MEGENA.output.list=MEGENA.output.listx1,MEGENA.hubs.list=MEGENA.hubs.listx1)
       })
       hubnetworkdfout<-reactive({
         if(input$logif){
@@ -1898,9 +1908,6 @@ server<-shinyServer(function(input, output, session){
 
     }
   )
-
-
-
 
 })
 
